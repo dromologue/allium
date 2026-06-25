@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/juxt/allium/enterprise-crucible/schema/skill-manifest.schema.json",
+  "title": "Enterprise Crucible skill manifest",
+  "description": "The contract for a skill: a user-facing affordance on an Allium component. Lives beside skill.md, evals.feature and cost-profile.json in a skill directory.",
+  "type": "object",
+  "required": ["name", "identity", "capability", "context", "acts_on"],
+  "properties": {
+    "name": { "type": "string", "description": "Skill name (kebab-case)." },
+    "identity": { "type": "string", "description": "What the skill does, one sentence." },
+    "capability": { "type": "string", "description": "The enterprise capability this skill serves." },
+    "context": { "type": "string", "description": "The skill context (must have a placed spec)." },
+    "acts_on": {
+      "type": "object",
+      "required": ["spec", "component"],
+      "properties": {
+        "spec": { "type": "string", "description": "The .allium file defining the component." },
+        "component": { "type": "string", "description": "The component (entity) the skill acts on." },
+        "surface": { "type": "string", "description": "The surface the skill works behind, if any." }
+      }
+    },
+    "inputs": { "type": "array", "items": { "type": "object" } },
+    "outputs": { "type": "array", "items": { "type": "object" } },
+    "behaviour_rules": { "type": "array", "items": { "type": "string" }, "description": "Allium rule names that govern the skill." },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "must": { "type": "array", "items": { "type": "string" } },
+        "must_not": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "artefacts": { "type": "object", "description": "Pointers to the five artefacts." }
+  }
+}

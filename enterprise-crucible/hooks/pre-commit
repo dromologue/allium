@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Enterprise Crucible pre-commit hook. Symlink or copy to .git/hooks/pre-commit, or wire via
+# your pre-commit framework. Set EC_SPECS to the directory holding your placed .allium specs.
+set -euo pipefail
+EC_SPECS="${EC_SPECS:-enterprise-crucible/examples/mortgage-origination}"
+HERE="$(cd "$(dirname "$0")" && pwd)"
+node "$HERE/../bin/check.mjs" "$EC_SPECS"

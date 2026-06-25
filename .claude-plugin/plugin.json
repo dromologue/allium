@@ -16,7 +16,8 @@
     "./skills/elicit",
     "./skills/propagate",
     "./skills/tend",
-    "./skills/weed"
+    "./skills/weed",
+    "./enterprise-crucible"
   ],
   "agents": [
     "./agents/tend.md",

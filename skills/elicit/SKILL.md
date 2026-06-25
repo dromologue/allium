@@ -184,10 +184,11 @@ Questions to ask:
 2. "Where does this system start and end? What's in scope vs out?"
 3. "Who are the users? Are there different roles?"
 4. "Are there existing systems this integrates with? What do they handle?"
+5. "Which enterprise capability does this realise, and which bounded context does it belong to?" If an enterprise capability model is present (see the [enterprise-crucible](../../enterprise-crucible/README.md) directory), situate this spec within it — name the capability and skill context, and note any it introduces. This **placement** keeps the spec's language consistent with every other spec in the same context, and is worthwhile even when no skill is built on these components.
 
 If Phase 0 was skipped, also ask: "What are the key processes this system supports? What does success look like for each?" This anchors entity identification to processes rather than enumerating nouns in isolation. The techniques in [process discovery](./references/process-discovery.md) apply here too — use past tense recall and outcome-first questioning if the user struggles to articulate the process.
 
-**Outputs:** List of actors and roles. List of core entities (derived from the process if Phase 0 ran). Boundary decisions (what is external). One-sentence description.
+**Outputs:** List of actors and roles. List of core entities (derived from the process if Phase 0 ran). Boundary decisions (what is external). One-sentence description. Placement: the capability and skill context this spec belongs to, recorded in the capability model. Once behaviour is captured, hand off to the [enterprise-crucible](../../enterprise-crucible/README.md) skill to build or assemble the user-facing skills that act on these components.
 
 **Watch for:** Scope creep ("and it also does X, Y, Z", gently refocus). Assumed knowledge ("obviously it handles auth", make explicit). Descriptions that suggest a [library spec](./references/library-spec-signals.md) rather than application-specific logic (e.g. OAuth, payment processing, email delivery).
 

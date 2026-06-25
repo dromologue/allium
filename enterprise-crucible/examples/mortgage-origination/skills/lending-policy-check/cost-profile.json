@@ -1,0 +1,8 @@
+{
+  "model": "claude-sonnet-4-6",
+  "baseline": { "input_tokens": 8200, "output_tokens": 600, "latency_ms": 2400, "cost_per_call_gbp": 0.031 },
+  "optimised": { "input_tokens": 1400, "output_tokens": 600, "latency_ms": 1100, "cost_per_call_gbp": 0.006 },
+  "optimisations": ["cache the static current PolicySet across calls", "right-size the model to the task"],
+  "regression_budget": { "max_cost_per_call_gbp": 0.008, "min_eval_pass_rate": 1.0 },
+  "telemetry": { "emit": ["cost_per_call_gbp", "eval_pass_rate", "missing_policy_error_rate"], "sink": "observability platform" }
+}

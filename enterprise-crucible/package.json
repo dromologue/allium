@@ -1,0 +1,17 @@
+{
+  "name": "enterprise-crucible",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Enterprise placement and skill assembly for Allium",
+  "type": "module",
+  "bin": {
+    "ec-place": "bin/place.mjs",
+    "ec-check": "bin/check.mjs"
+  },
+  "scripts": {
+    "place": "node bin/place.mjs examples/mortgage-origination",
+    "check": "node bin/check.mjs examples/mortgage-origination",
+    "test": "node bin/check.mjs examples/mortgage-origination"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,71 @@
+{
+  "$schema": "../../schema/capability-model.schema.json",
+  "generated_by": "enterprise-crucible/bin/place.mjs",
+  "workspace": "mortgage-origination",
+  "capabilities": [
+    {
+      "name": "Mortgage Origination",
+      "contexts": [
+        {
+          "name": "Application Intake",
+          "specs": [
+            "application-intake.allium"
+          ],
+          "components": [
+            "Submission"
+          ],
+          "surfaces": [
+            {
+              "name": "IntakeStatus",
+              "fulfils": [],
+              "demands": [
+                "AssessmentResult"
+              ]
+            }
+          ],
+          "skills": []
+        },
+        {
+          "name": "Underwriting",
+          "specs": [
+            "underwriting.allium"
+          ],
+          "components": [
+            "Application",
+            "Assessment",
+            "Finding",
+            "PolicySet"
+          ],
+          "surfaces": [
+            {
+              "name": "AssessmentSurface",
+              "fulfils": [
+                "AssessmentResult"
+              ],
+              "demands": []
+            }
+          ],
+          "skills": [
+            {
+              "name": "lending-policy-check",
+              "identity": "Produce a policy assessment for a mortgage application",
+              "acts_on": "Application"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "interfaces": [
+    {
+      "contract": "AssessmentResult",
+      "fulfilled_by": [
+        "Underwriting"
+      ],
+      "demanded_by": [
+        "Application Intake"
+      ]
+    }
+  ],
+  "warnings": []
+}

@@ -1,0 +1,49 @@
+-- allium: 3
+-- application-intake.allium
+-- Capability: Mortgage Origination
+-- Context: Application Intake
+
+use "./underwriting.allium" as underwriting
+
+------------------------------------------------------------
+-- External Entities
+------------------------------------------------------------
+
+external entity Applicant {
+    name: String
+}
+
+------------------------------------------------------------
+-- Entities and Variants
+------------------------------------------------------------
+
+entity Submission {
+    applicant: Applicant
+    complete: Boolean
+    status: draft | submitted
+}
+
+------------------------------------------------------------
+-- Rules
+------------------------------------------------------------
+
+rule SubmitApplication {
+    when: entry: Submission.status becomes submitted
+    requires: entry.complete = true
+    ensures: underwriting/Application.created(applicant: entry.applicant, amount: 0, ltv: 0, status: received)
+}
+
+------------------------------------------------------------
+-- Surfaces
+------------------------------------------------------------
+
+surface IntakeStatus {
+    facing applicant: Applicant
+    context submission: Submission
+
+    exposes:
+        submission.status
+
+    contracts:
+        demands underwriting/AssessmentResult
+}

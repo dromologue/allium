@@ -1,0 +1,30 @@
+{
+  "name": "lending-policy-check",
+  "identity": "Produce a policy assessment for a mortgage application",
+  "capability": "Mortgage Origination",
+  "context": "Underwriting",
+  "acts_on": {
+    "spec": "underwriting.allium",
+    "component": "Application",
+    "surface": "AssessmentSurface"
+  },
+  "inputs": [
+    { "name": "application", "component": "Application" },
+    { "name": "policy_set", "component": "PolicySet" }
+  ],
+  "outputs": [
+    { "name": "assessment", "interface": "AssessmentResult" }
+  ],
+  "behaviour_rules": ["CheckAgainstPolicy"],
+  "constraints": {
+    "must": ["EveryFindingCited"],
+    "must_not": ["NoLendingDecision"]
+  },
+  "artefacts": {
+    "manifest": "manifest.json",
+    "evals": "evals.feature",
+    "cost_profile": "cost-profile.json",
+    "guardrails": "manifest.json#constraints",
+    "observability": "cost-profile.json#telemetry"
+  }
+}

@@ -1,0 +1,6 @@
+flowchart TB
+  subgraph cap_mortgage_origination["Mortgage Origination"]
+    ctx_application_intake["Application Intake<br/>components: Submission<br/>skills: —"]
+    ctx_underwriting["Underwriting<br/>components: Application, Assessment, Finding, PolicySet<br/>skills: lending-policy-check"]
+  end
+  ctx_application_intake -->|AssessmentResult| ctx_underwriting

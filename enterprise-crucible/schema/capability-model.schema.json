@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/juxt/allium/enterprise-crucible/schema/capability-model.schema.json",
+  "title": "Enterprise Crucible capability model",
+  "description": "Generated enterprise view: capabilities -> skill contexts -> components and skills, plus cross-context interfaces. Produced by bin/place.mjs from placed .allium specs and skill manifests; do not hand-edit.",
+  "type": "object",
+  "required": ["workspace", "capabilities", "interfaces"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "generated_by": { "type": "string" },
+    "workspace": { "type": "string", "description": "The workspace (repository or directory) this model covers." },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "contexts"],
+        "properties": {
+          "name": { "type": "string" },
+          "contexts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "specs", "components", "surfaces", "skills"],
+              "properties": {
+                "name": { "type": "string", "description": "Skill context (bounded context) name; unique within the model." },
+                "specs": { "type": "array", "items": { "type": "string" }, "description": "The .allium files whose components this context owns." },
+                "components": { "type": "array", "items": { "type": "string" }, "description": "Internal Allium entities owned by this context." },
+                "surfaces": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["name", "fulfils", "demands"],
+                    "properties": {
+                      "name": { "type": "string" },
+                      "fulfils": { "type": "array", "items": { "type": "string" } },
+                      "demands": { "type": "array", "items": { "type": "string" } }
+                    }
+                  }
+                },
+                "skills": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["name"],
+                    "properties": {
+                      "name": { "type": "string" },
+                      "identity": { "type": ["string", "null"] },
+                      "acts_on": { "type": ["string", "null"], "description": "The component this skill acts on." }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "interfaces": {
+      "type": "array",
+      "description": "Cross-context interfaces, projected from Allium contracts referenced by surfaces.",
+      "items": {
+        "type": "object",
+        "required": ["contract", "fulfilled_by", "demanded_by"],
+        "properties": {
+          "contract": { "type": "string" },
+          "fulfilled_by": { "type": "array", "items": { "type": "string" } },
+          "demanded_by": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "warnings": { "type": "array", "items": { "type": "string" } }
+  }
+}

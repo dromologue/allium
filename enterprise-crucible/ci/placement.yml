@@ -1,0 +1,26 @@
+# Enterprise Crucible — placement check.
+# Copy to .github/workflows/ to enforce the enterprise view on every PR. It fails when a
+# spec is unplaced, a component is double-owned, an interface is demanded but unfulfilled,
+# or capability-model.json has drifted from the specs (the check-generated discipline).
+name: enterprise-crucible placement check
+
+on:
+  pull_request:
+    paths:
+      - "enterprise-crucible/**"
+      - "**/*.allium"
+  push:
+    branches: [main]
+
+jobs:
+  placement:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install allium CLI
+        run: cargo install allium-cli
+      - name: Placement check (bundled example)
+        run: node enterprise-crucible/bin/check.mjs enterprise-crucible/examples/mortgage-origination

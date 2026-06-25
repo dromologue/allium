@@ -1,0 +1,100 @@
+-- allium: 3
+-- underwriting.allium
+-- Capability: Mortgage Origination
+-- Context: Underwriting
+
+------------------------------------------------------------
+-- External Entities
+------------------------------------------------------------
+
+external entity Applicant {
+    name: String
+}
+
+external entity Underwriter {
+    name: String
+}
+
+------------------------------------------------------------
+-- Contracts
+------------------------------------------------------------
+
+contract AssessmentResult {
+    latest: () -> Assessment
+}
+
+------------------------------------------------------------
+-- Entities and Variants
+------------------------------------------------------------
+
+entity PolicySet {
+    version: String
+    effective_from: Timestamp
+    is_current: effective_from <= now
+}
+
+entity Application {
+    applicant: Applicant
+    amount: Decimal
+    ltv: Decimal
+    status: received | assessed | escalated
+}
+
+entity Assessment {
+    application: Application
+    makes_lending_decision: Boolean
+    findings: Finding with assessment = this
+}
+
+entity Finding {
+    assessment: Assessment
+    policy_clause: String
+    detail: String
+}
+
+------------------------------------------------------------
+-- Config
+------------------------------------------------------------
+
+config {
+    max_ltv: Decimal = 0.9
+}
+
+------------------------------------------------------------
+-- Rules
+------------------------------------------------------------
+
+rule CheckAgainstPolicy {
+    when: submission: Application.status becomes received
+    let policy = PolicySet where is_current
+    ensures: Assessment.created(application: submission, makes_lending_decision: false)
+    ensures: submission.status becomes assessed
+}
+
+------------------------------------------------------------
+-- Invariants
+------------------------------------------------------------
+
+invariant NoLendingDecision {
+    Assessments.all(a => a.makes_lending_decision = false)
+}
+
+invariant EveryFindingCited {
+    Findings.all(f => f.policy_clause != "")
+}
+
+------------------------------------------------------------
+-- Surfaces
+------------------------------------------------------------
+
+surface AssessmentSurface {
+    facing reviewer: Underwriter
+    context assessment: Assessment
+
+    exposes:
+        assessment.status
+        assessment.findings
+
+    contracts:
+        fulfils AssessmentResult
+}
